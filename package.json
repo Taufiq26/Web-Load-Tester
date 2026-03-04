@@ -1,0 +1,21 @@
+{
+  "name": "web-tester",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "k6 run loadtest.ts && tsx scripts/generate-report.ts",
+    "report": "tsx scripts/generate-report.ts"
+  },
+  "keywords": [],
+  "author": "gwetaufiq",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@types/k6": "^1.6.0",
+    "chrome-launcher": "^1.2.1",
+    "puppeteer": "^24.37.5",
+    "puppeteer-core": "^24.37.5",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

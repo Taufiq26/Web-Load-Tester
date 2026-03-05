@@ -5,7 +5,7 @@ import { check, sleep } from 'k6';
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js';
 
 export let options = {
-  vus: 50, // Virtual Users (Simulasi x user barengan)
+  vus: 10, // Virtual Users (Simulasi x user barengan)
   duration: '30s', // Durasi pengujian
 };
 

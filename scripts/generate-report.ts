@@ -17,15 +17,31 @@ async function generateReport() {
         if (higherIsBetter) {
             if (value >= thresholds.warn) return { icon: '✅', label: 'BAIK', color: '#10b981', bg: '#ecfdf5' };
             if (value >= thresholds.fail) return { icon: '⚠️', label: 'PERLU PERHATIAN', color: '#f59e0b', bg: '#fffbeb' };
-            return { icon: '❌', label: 'BAHAYA', color: '#ef4444', bg: '#fef2f2' };
+            return { icon: '❌', label: 'KRITIS', color: '#ef4444', bg: '#fef2f2' };
         } else {
             if (value <= thresholds.warn) return { icon: '✅', label: 'BAIK', color: '#10b981', bg: '#ecfdf5' };
             if (value <= thresholds.fail) return { icon: '⚠️', label: 'PERLU PERHATIAN', color: '#f59e0b', bg: '#fffbeb' };
-            return { icon: '❌', label: 'BAHAYA', color: '#ef4444', bg: '#fef2f2' };
+            return { icon: '❌', label: 'KRITIS', color: '#ef4444', bg: '#fef2f2' };
         }
     };
 
     const formatMs = (val: number) => val < 1 ? val.toFixed(3) + 'ms' : val.toFixed(1) + 'ms';
+
+    const generateExecutiveSummary = () => {
+        const p95 = metrics.http_req_duration.values['p(95)'];
+        const failRate = metrics.http_req_failed.values.rate * 100;
+        const checkRate = metrics.checks ? (metrics.checks.values.passes / (metrics.checks.values.passes + metrics.checks.values.fails)) * 100 : 100;
+
+        let summary = '';
+        if (failRate === 0 && checkRate === 100 && p95 <= 800) {
+            summary = `Sistem menunjukkan performa yang <b>Sangat Baik</b>. Dibawah beban ${metrics.vus?.values.max || 'aktif'}, website tetap stabil dengan tingkat keberhasilan 100% dan waktu respon yang sangat cepat (${p95.toFixed(0)}ms). Tidak ditemukan bottleneck pada infrastruktur maupun backend.`;
+        } else if (failRate > 1 || checkRate < 95 || p95 > 2000) {
+            summary = `Sistem berada dalam kondisi <b>Kritis</b>. Ditemukan masalah signifikan pada ${failRate > 1 ? 'tingkat kegagalan request' : p95 > 2000 ? 'latensi respon' : 'validasi konten'}. Pengguna akan merasakan gangguan nyata atau kegagalan saat mengakses layanan pada beban ini. Perlu dilakukan investigasi segera pada kapasitas server atau optimasi database.`;
+        } else {
+            summary = `Sistem berjalan <b>Cukup Stabil</b> namun memerlukan perhatian. Meskipun tingkat keberhasilan tinggi, terdapat indikasi perlambatan pada beberapa metrik (p95: ${p95.toFixed(0)}ms). Sistem mungkin akan mencapai titik jenuh jika beban pengunjung ditingkatkan lebih jauh.`;
+        }
+        return summary;
+    };
 
     // --- METRIC ANALYSIS LOGIC ---
     const sections = [
@@ -173,6 +189,15 @@ async function generateReport() {
                 <div class="summary-card">
                     <div class="summary-label">Concurrent VUs</div>
                     <div class="summary-value">${metrics.vus ? metrics.vus.values.max : 'Config'}</div>
+                </div>
+            </div>
+
+            <div class="analysis-row" style="background: #f8fafc; border-left: 6px solid ${durationStatusMain().color};">
+                <div class="analysis-body">
+                    <h2 style="margin-top: 0; border: none; padding: 0;">📋 Kesimpulan Eksekutif</h2>
+                    <div class="analysis-desc" style="font-size: 15px; color: #1e293b;">
+                        ${generateExecutiveSummary()}
+                    </div>
                 </div>
             </div>
 

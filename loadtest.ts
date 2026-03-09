@@ -5,16 +5,16 @@ import { check, sleep } from 'k6';
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js';
 
 export let options = {
-  vus: 10, // Virtual Users (Simulasi x user barengan)
-  duration: '30s', // Durasi pengujian
+  vus: __ENV.VUS ? parseInt(__ENV.VUS) : 100,
+  duration: __ENV.DURATION || '30s',
 };
 
 export default function () {
   // 1. Tes Landing Page (Frontend)
-  let resLanding = http.get('https://kbpayuk.com');
-  check(resLanding, { 'Landing Page status 200': (r) => r.status === 200 });
+  let resLanding = http.get(__ENV.URL || 'https://kbpayuk.com');
+  check(resLanding, { 'Target status 200': (r) => r.status === 200 });
 
-  sleep(1); // Jeda antar request agar tidak seperti DDoS
+  sleep(0.1); // Jeda antar request agar tidak seperti DDoS
 }
 
 export function handleSummary(data: any) {

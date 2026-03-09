@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "k6 run loadtest.ts && tsx scripts/generate-report.ts",
-    "report": "tsx scripts/generate-report.ts"
+    "report": "tsx scripts/generate-report.ts",
+    "server": "tsx server.ts"
   },
   "keywords": [],
   "author": "gwetaufiq",
@@ -17,5 +18,12 @@
     "puppeteer-core": "^24.37.5",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "ts-node": "^10.9.2"
   }
 }

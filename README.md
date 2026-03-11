@@ -46,6 +46,37 @@ npm run report
 
 ---
 
+## 🖥️ Menjalankan Web UI
+Web UI menyediakan antarmuka grafis (GUI) untuk menjalankan pengujian tanpa harus menggunakan terminal secara manual.
+
+### 🏗️ Local Development
+1. Jalankan server lokal:
+   ```bash
+   npm run server
+   ```
+2. Buka browser dan akses [http://localhost:3000](http://localhost:3000).
+
+### 🚀 Production Server
+Untuk lingkungan production, disarankan menggunakan *process manager* seperti **PM2** agar server tetap berjalan di latar belakang:
+
+1. **Instal PM2** (jika belum ada):
+   ```bash
+   npm install pm2 -g
+   ```
+
+2. **Jalankan Aplikasi**:
+   ```bash
+   pm2 start server.ts --interpreter ./node_modules/.bin/tsx --name web-tester-ui
+   ```
+
+3. **Monitor Status**:
+   ```bash
+   pm2 status
+   pm2 logs web-tester-ui
+   ```
+
+---
+
 ## 📊 Penjelasan Metrik Utama
 
 | Metrik | Deskripsi | Standar Baik |
@@ -82,4 +113,4 @@ let res = http.get('https://example.com');
 ## 📄 Lisensi
 Proyek ini dilisensikan di bawah **MIT License**. Anda bebas menggunakan, menyalin, dan memodifikasi proyek ini selama menyertakan referensi pembuat aslinya (**gwetaufiq**).
 
-**Antigravity Power** &bull; 2026
+**Taufiq26** &bull; 2026

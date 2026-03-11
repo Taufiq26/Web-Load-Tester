@@ -54,7 +54,15 @@ Web UI menyediakan antarmuka grafis (GUI) untuk menjalankan pengujian tanpa haru
    ```bash
    npm run server
    ```
-2. Buka browser dan akses [http://localhost:3000](http://localhost:3000).
+   *Secara default berjalan di port 3000.*
+
+2. **Custom Port**:
+   Jika ingin menggunakan port lain (misal: 8080):
+   ```bash
+   PORT=8080 npm run server
+   ```
+
+3. Buka browser dan akses [http://localhost:3000](http://localhost:3000) (atau sesuai port yang Anda set).
 
 ### 🚀 Production Server
 Untuk lingkungan production, disarankan menggunakan *process manager* seperti **PM2** agar server tetap berjalan di latar belakang:
@@ -66,7 +74,11 @@ Untuk lingkungan production, disarankan menggunakan *process manager* seperti **
 
 2. **Jalankan Aplikasi**:
    ```bash
+   # Menggunakan port default (3000)
    pm2 start server.ts --interpreter ./node_modules/.bin/tsx --name web-tester-ui
+
+   # Atau dengan custom port (misal: 5000)
+   PORT=5000 pm2 start server.ts --interpreter ./node_modules/.bin/tsx --name web-tester-ui
    ```
 
 3. **Monitor Status**:

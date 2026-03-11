@@ -34,6 +34,16 @@ app.post('/api/test', (req, res) => {
     // Option to stream logs back via SSE if needed
   });
 
+  k6Process.on('error', (err) => {
+    console.error(`Failed to start k6: ${err.message}`);
+    if (!res.headersSent) {
+      res.status(500).json({ 
+        error: 'k6 is not installed or not found in PATH',
+        details: err.message 
+      });
+    }
+  });
+
   k6Process.stderr.on('data', (data) => {
     console.error(`k6 error: ${data}`);
   });

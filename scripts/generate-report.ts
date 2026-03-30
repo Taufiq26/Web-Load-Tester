@@ -280,7 +280,7 @@ async function generateReport() {
             </table>
 
             <div class="footer">
-                Antigravity Performance Reporter &bull; k6 Summary Data &bull; v1.2
+                Performance Reporter &bull; k6 Summary Data &bull; v1.2
             </div>
         </div>
     </body>
